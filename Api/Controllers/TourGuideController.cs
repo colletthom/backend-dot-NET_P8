@@ -33,30 +33,39 @@ public class TourGuideController : ControllerBase
     // The distance in miles between the user's location and each of the attractions.
     // The reward points for visiting each Attraction.
     //    Note: Attraction reward points can be gathered from RewardsCentral
-    [HttpGet("getNearbyAttractions")]
-    public ActionResult<List<Attraction>> GetNearbyAttractions([FromQuery] string userName)
-    {
-        var visitedLocation = _tourGuideService.GetUserLocation(GetUser(userName));
-        var attractions = _tourGuideService.GetNearByAttractions(visitedLocation);
-        return Ok(attractions);
-    }
+/*// TODO : modifiez cette méthode pour ne plus renvoyer de liste d'attractions.
+// Au lieu de cela : obtenez les cinq attractions touristiques les plus proches de l'utilisateur, quelle que soit leur distance.
+// Renvoie un nouvel objet JSON qui contient :
+// Nom de l'attraction touristique,
+// Attractions touristiques latitude/longitude,
+// Localisation de l'utilisateur lat/long,
+// La distance en miles entre l'emplacement de l'utilisateur et chacune des attractions.
+// Les points de récompense pour la visite de chaque attraction.
+// Remarque : les points de récompense d'attraction peuvent être collectés depuis RewardsCentral*/
+[HttpGet("getNearbyAttractions")]
+public ActionResult<List<Attraction>> GetNearbyAttractions([FromQuery] string userName)
+{
+    var visitedLocation = _tourGuideService.GetUserLocation(GetUser(userName));
+    var attractions = _tourGuideService.GetNearByAttractions(visitedLocation);
+    return Ok(attractions);
+}
 
-    [HttpGet("getRewards")]
-    public ActionResult<List<UserReward>> GetRewards([FromQuery] string userName)
-    {
-        var rewards = _tourGuideService.GetUserRewards(GetUser(userName));
-        return Ok(rewards);
-    }
+[HttpGet("getRewards")]
+public ActionResult<List<UserReward>> GetRewards([FromQuery] string userName)
+{
+    var rewards = _tourGuideService.GetUserRewards(GetUser(userName));
+    return Ok(rewards);
+}
 
-    [HttpGet("getTripDeals")]
-    public ActionResult<List<Provider>> GetTripDeals([FromQuery] string userName)
-    {
-        var deals = _tourGuideService.GetTripDeals(GetUser(userName));
-        return Ok(deals);
-    }
+[HttpGet("getTripDeals")]
+public ActionResult<List<Provider>> GetTripDeals([FromQuery] string userName)
+{
+    var deals = _tourGuideService.GetTripDeals(GetUser(userName));
+    return Ok(deals);
+}
 
-    private User GetUser(string userName)
-    {
-        return _tourGuideService.GetUser(userName);
-    }
+private User GetUser(string userName)
+{
+    return _tourGuideService.GetUser(userName);
+}
 }
