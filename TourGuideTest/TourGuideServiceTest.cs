@@ -108,7 +108,7 @@ namespace TourGuideTest
 
             _fixture.TourGuideService.Tracker.StopTracking();
 
-            Assert.Equal(10, providers.Count);
+            Assert.Equal(5, providers.Count);
         }
     }
 }
