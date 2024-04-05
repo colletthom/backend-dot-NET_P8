@@ -39,7 +39,6 @@ public class RewardServiceTest : IClassFixture<DependencyFixture>
     }
 
     [Fact]
-    //[Fact(Skip = ("Needs fixed - can throw InvalidOperationException"))]
     public void NearAllAttractions()
     {
         _fixture.Initialize(1);

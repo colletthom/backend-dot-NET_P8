@@ -22,6 +22,7 @@ public class TourGuideService : ITourGuideService
     private const string TripPricerApiKey = "test-server-api-key";
     private bool _testMode = true;
 
+
     public TourGuideService(ILogger<TourGuideService> logger, IGpsUtil gpsUtil, IRewardsService rewardsService, ILoggerFactory loggerFactory, IRewardCentral rewardCentral)
     {
         _logger = logger;
@@ -87,9 +88,11 @@ public class TourGuideService : ITourGuideService
 
     public VisitedLocation TrackUserLocation(User user)
     {
+
         VisitedLocation visitedLocation = _gpsUtil.GetUserLocation(user.UserId);
         user.AddToVisitedLocations(visitedLocation);
         _rewardsService.CalculateRewards(user);
+
         return visitedLocation;
     }
 

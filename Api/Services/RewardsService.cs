@@ -41,17 +41,21 @@ public class RewardsService : IRewardsService
         for (int i = 0; i < userLocations.Count; i++)
         //foreach (var visitedLocation in userLocations)
         {
-            foreach (var attraction in attractions)
+            if (userLocations[i] != null)
             {
-                if (!user.UserRewards.Any(r => r.Attraction.AttractionName == attraction.AttractionName))
+                for (int j = 0; j < attractions.Count; j++)
+                //foreach (var attraction in attractions)
                 {
-                    if (NearAttraction(userLocations[i], attraction))
+                    if (!user.UserRewards.Any(r => r.Attraction.AttractionName == attractions[j].AttractionName))
                     {
-                        user.AddUserReward(new UserReward(userLocations[i], attraction, GetRewardPoints(attraction, user)));
+                        if (NearAttraction(userLocations[i], attractions[j]))
+                        {
+                            user.AddUserReward(new UserReward(userLocations[i], attractions[j], GetRewardPoints(attractions[j], user)));
+                        }
                     }
                 }
             }
-        }
+        } 
     }
 
     public bool IsWithinAttractionProximity(Attraction attraction, Locations location)
