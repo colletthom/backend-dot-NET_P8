@@ -43,10 +43,10 @@ public class TourGuideController : ControllerBase
 // Les points de récompense pour la visite de chaque attraction.
 // Remarque : les points de récompense d'attraction peuvent être collectés depuis RewardsCentral*/
 [HttpGet("getNearbyAttractions")]
-public ActionResult<List<Object>> GetNearbyAttractions([FromQuery] string userName)
+public async Task<ActionResult<List<Object>>> GetNearbyAttractions([FromQuery] string userName)
 {
-    var visitedLocation = _tourGuideService.GetUserLocation(GetUser(userName));
-    var attractions = _tourGuideService.GetNearByAttractions(visitedLocation);
+    var visitedLocation = await _tourGuideService.GetUserLocation(GetUser(userName));
+    var attractions = await _tourGuideService.GetNearByAttractions(visitedLocation);
     return Ok(attractions);
 }
 

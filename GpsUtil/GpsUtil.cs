@@ -10,15 +10,15 @@ namespace GpsUtil;
 
 public class GpsUtil
 {
-    //1000 au début
     private static readonly SemaphoreSlim rateLimiter = new(1000, 1000);
 
-    public VisitedLocation GetUserLocation(Guid userId)
+    public async Task<VisitedLocation> GetUserLocation(Guid userId)
     {
         rateLimiter.Wait();
         try
         {
-          //  Sleep();
+            //Après avoir retiré le Sleep je l'ai remis...cela fait surement parti de l'exercice
+            Sleep(); 
 
             double longitude = ThreadLocalRandom.NextDouble(-180.0, 180.0);
             longitude = Math.Round(longitude, 6);
@@ -36,12 +36,13 @@ public class GpsUtil
         }
     }
 
-    public List<Attraction> GetAttractions()
+    public async Task<List<Attraction>> GetAttractions()
     {
         rateLimiter.Wait();
         try
         {
-            //SleepLighter();
+            //Après avoir retiré le SleepLighter je l'ai remis...cela fait surement parti de l'exercice
+            SleepLighter();
 
             List<Attraction> attractions = new()
         {

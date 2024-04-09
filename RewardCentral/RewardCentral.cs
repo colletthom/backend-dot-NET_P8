@@ -12,7 +12,8 @@ public class RewardCentral
     public int GetAttractionRewardPoints(Guid attractionId, Guid userId)
     {
         int randomDelay = new Random().Next(1, 1000);
-        //Thread.Sleep(randomDelay);
+        //Après avoir retiré le Thread.Sleep(randomDelay) je l'ai remis...cela fait surement parti de l'exercice
+        Thread.Sleep(randomDelay);
 
         int randomInt = new Random().Next(1, 1000);
         return randomInt;

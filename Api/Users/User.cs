@@ -23,7 +23,7 @@ public class User
         EmailAddress = emailAddress;
     }
 
-    public void AddToVisitedLocations(VisitedLocation visitedLocation)
+    public async Task AddToVisitedLocations(VisitedLocation visitedLocation)
     {
         VisitedLocations.Add(visitedLocation);
     }
@@ -33,7 +33,7 @@ public class User
         VisitedLocations.Clear();
     }
 
-    public void AddUserReward(UserReward userReward)
+    public async Task AddUserReward(UserReward userReward)
     {
         if (!UserRewards.Exists(r => r.Attraction.AttractionName == userReward.Attraction.AttractionName))
         {

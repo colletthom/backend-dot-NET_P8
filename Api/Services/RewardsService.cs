@@ -32,11 +32,11 @@ public class RewardsService : IRewardsService
         _proximityBuffer = _defaultProximityBuffer;
     }
 
-    public void CalculateRewards(User user)
+    public async Task CalculateRewards(User user)
     {
         count++;
         List<VisitedLocation> userLocations = user.VisitedLocations;
-        List<Attraction> attractions = _gpsUtil.GetAttractions();
+        List<Attraction> attractions = await _gpsUtil.GetAttractions();
 
         for (int i = 0; i < userLocations.Count; i++)
         //foreach (var visitedLocation in userLocations)
@@ -50,7 +50,7 @@ public class RewardsService : IRewardsService
                     {
                         if (NearAttraction(userLocations[i], attractions[j]))
                         {
-                            user.AddUserReward(new UserReward(userLocations[i], attractions[j], GetRewardPoints(attractions[j], user)));
+                            user.AddUserReward(new UserReward(userLocations[i], attractions[j], await GetRewardPoints(attractions[j], user)));
                         }
                     }
                 }
@@ -58,7 +58,7 @@ public class RewardsService : IRewardsService
         } 
     }
 
-    public bool IsWithinAttractionProximity(Attraction attraction, Locations location)
+    public async Task<bool> IsWithinAttractionProximity(Attraction attraction, Locations location)
     {
         Console.WriteLine(GetDistance(attraction, location));
         return GetDistance(attraction, location) <= _attractionProximityRange;
@@ -69,7 +69,7 @@ public class RewardsService : IRewardsService
         return GetDistance(attraction, visitedLocation.Location) <= _proximityBuffer;
     }
 
-    private int GetRewardPoints(Attraction attraction, User user)
+    private async Task<int> GetRewardPoints(Attraction attraction, User user)
     {
         return _rewardsCentral.GetAttractionRewardPoints(attraction.AttractionId, user.UserId);
     }
