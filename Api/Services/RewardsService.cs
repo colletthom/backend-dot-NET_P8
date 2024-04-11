@@ -50,7 +50,7 @@ public class RewardsService : IRewardsService
                     {
                         if (NearAttraction(userLocations[i], attractions[j]))
                         {
-                            user.AddUserReward(new UserReward(userLocations[i], attractions[j], await GetRewardPoints(attractions[j], user)));
+                            await user.AddUserReward(new UserReward(userLocations[i], attractions[j], await GetRewardPoints(attractions[j], user)));
                         }
                     }
                 }

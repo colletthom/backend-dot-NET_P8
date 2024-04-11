@@ -45,21 +45,28 @@ namespace TourGuideTest
         }
 
         [Fact]
-        public void HighVolumeTrackLocation()
+        public async Task HighVolumeTrackLocation()
         {
             //On peut ici augmenter le nombre d'utilisateurs pour tester les performances
-            _fixture.Initialize(100);
+            _fixture.Initialize(100000);
 
             List<User> allUsers = _fixture.TourGuideService.GetAllUsers();
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
+            Parallel.ForEach(allUsers, user =>
+            {
+                _fixture.TourGuideService.TrackUserLocation(user);
+            });
+            /*
             foreach (var user in allUsers)
             {
                 _fixture.TourGuideService.TrackUserLocation(user);
-            }
+            }*/
+
             stopWatch.Stop();
+
             _fixture.TourGuideService.Tracker.StopTracking();
 
             _output.WriteLine($"highVolumeTrackLocation: Time Elapsed: {stopWatch.Elapsed.TotalSeconds} seconds.");
@@ -71,7 +78,7 @@ namespace TourGuideTest
         public async Task HighVolumeGetRewards()
         {
             //On peut ici augmenter le nombre d'utilisateurs pour tester les performances
-            _fixture.Initialize(100);
+            _fixture.Initialize(100000);
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -82,8 +89,12 @@ namespace TourGuideTest
             List<User> allUsers = _fixture.TourGuideService.GetAllUsers();
             allUsers.ForEach(u => u.AddToVisitedLocations(new VisitedLocation(u.UserId, attraction, DateTime.Now)));
 
-            allUsers.ForEach(u => _fixture.RewardsService.CalculateRewards(u));
-
+            //ligne à améliorer ci-dessous
+            //allUsers.ForEach(u => _fixture.RewardsService.CalculateRewards(u));
+            Parallel.ForEach(allUsers, user =>
+            {
+                _fixture.RewardsService.CalculateRewards(user);
+            });
             foreach (var user in allUsers)
             {
                 Assert.True(user.UserRewards.Count > 0);

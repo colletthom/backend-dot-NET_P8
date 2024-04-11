@@ -52,7 +52,7 @@ public class TourGuideService : ITourGuideService
     {
         return user.UserRewards;
     }
-    
+
     public async Task<VisitedLocation> GetUserLocation(User user)
     {
         return user.VisitedLocations.Any() ? user.GetLastVisitedLocation() : await TrackUserLocation(user);
@@ -88,24 +88,33 @@ public class TourGuideService : ITourGuideService
 
     public async Task<VisitedLocation> TrackUserLocation(User user)
     {
+        /*  Task calculateRewardsTask = _rewardsService.CalculateRewards(user);
+
+          VisitedLocation visitedLocation = null;
+
+          Task addToVisitedTask = _gpsUtil
+              .GetUserLocation(user.UserId)
+              .ContinueWith(task => {
+                  visitedLocation = task.Result;
+                  return user.AddToVisitedLocations(task.Result); 
+              });*/
+        
         VisitedLocation visitedLocation = await _gpsUtil.GetUserLocation(user.UserId);
 
-        Task calculateRewardsTask = Task.Run(() =>
-        {
-            _rewardsService.CalculateRewards(user);
-        });
+        Task calculateRewardsTask = Task.Run(async () =>
+             {
+                 await _rewardsService.CalculateRewards(user);
+             });
 
         user.AddToVisitedLocations(visitedLocation);
-
-        // Attention je n'attends pas la fin de la tâche calculateRewardsTask
 
         return visitedLocation;
     }
 
     public async Task<List<Object>> GetNearByAttractions(VisitedLocation visitedLocation)
     {
-        List<Attraction> nearbyAttractions = new ();
-        List<(Attraction,double)> ListAllAttractionsWithDistance = new ();
+        List<Attraction> nearbyAttractions = new();
+        List<(Attraction, double)> ListAllAttractionsWithDistance = new();
         foreach (var attraction in await _gpsUtil.GetAttractions())
         {
             double distance = _rewardsService.GetDistance(attraction, visitedLocation.Location);
@@ -114,24 +123,24 @@ public class TourGuideService : ITourGuideService
         List<(Attraction, double)> ListAllAttractionsWithDistancesort = ListAllAttractionsWithDistance.OrderBy(x => x.Item2).ToList();
 
         nearbyAttractions.AddRange(new List<Attraction>
-        { 
+        {
             ListAllAttractionsWithDistancesort[0].Item1,
             ListAllAttractionsWithDistancesort[1].Item1,
             ListAllAttractionsWithDistancesort[2].Item1,
             ListAllAttractionsWithDistancesort[3].Item1,
-            ListAllAttractionsWithDistancesort[4].Item1 
+            ListAllAttractionsWithDistancesort[4].Item1
         });
 
         var newNearbyAttraction = nearbyAttractions
             .Select(x => new
-                {
-            attractionName= x.AttractionName,
-            attractionLatitude = x.Latitude,
-            attractionLongitude = x.Longitude,
-            userLatitude = visitedLocation.Location.Latitude,
-            userLongitude = visitedLocation.Location.Longitude,
-            distanceAttractionUser = _rewardsService.GetDistance(x, visitedLocation.Location),
-            rewardPoints = _rewardCentral.GetAttractionRewardPoints(x.AttractionId, visitedLocation.UserId)
+            {
+                attractionName = x.AttractionName,
+                attractionLatitude = x.Latitude,
+                attractionLongitude = x.Longitude,
+                userLatitude = visitedLocation.Location.Latitude,
+                userLongitude = visitedLocation.Location.Longitude,
+                distanceAttractionUser = _rewardsService.GetDistance(x, visitedLocation.Location),
+                rewardPoints = _rewardCentral.GetAttractionRewardPoints(x.AttractionId, visitedLocation.UserId)
             })
                 .ToList();
         return newNearbyAttraction.Cast<object>().ToList();
