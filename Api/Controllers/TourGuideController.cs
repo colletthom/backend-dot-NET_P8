@@ -15,7 +15,6 @@ public class TourGuideController : ControllerBase
     public TourGuideController(ITourGuideService tourGuideService)
     {
         _tourGuideService = tourGuideService;
-
     }
 
     [HttpGet("getLocation")]
