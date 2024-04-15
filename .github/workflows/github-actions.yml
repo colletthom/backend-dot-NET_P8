@@ -1,6 +1,13 @@
 name: Pipeline IC P8
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - autre_branche
 
 jobs:
   build:
