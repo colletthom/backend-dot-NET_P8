@@ -36,11 +36,27 @@ jobs:
       with:
         name: dll-artifacts
         path: |
-          **/TourGuideTest/bin/Debug/net7.0/*.dll #chemin définit dans le CSproj: bin\$(Configuration)\$(TargetFramework)\
-          **/GpsUtil/bin/Debug/net7.0/*.dll
+          **/TourGuideTest/obj/Debug/net7.0/*.dll
+          **/TourGuideTest/obj/Debug/net7.0/ref/*.dll
+          **/TourGuideTest/obj/Debug/net7.0/refint/*.dll
+          **/TourGuideTest/bin/Debug/net7.0/*.dll
+          **/TourGuideTest/bin/Debug/net7.0/net7.0/fine-code-coverage/build-output/*.dll
+          **/Api/obj/Debug/net7.0/*.dll
+          **/Api/obj/Debug/net7.0/ref/*.dll
+          **/Api/obj/Debug/net7.0/refint/*.dll
+          **/Api/bin/Debug/net7.0/*.dll
+          **/RewardCentral/obj/Debug/net7.0/*.dll
+          **/RewardCentral/obj/Debug/net7.0/ref/*.dll
+          **/RewardCentral/obj/Debug/net7.0/refint/*.dll
           **/RewardCentral/bin/Debug/net7.0/*.dll
-          **/TourGuide/bin/Debug/net7.0/*.dll
+          **/TripPricer/obj/Debug/net7.0/*.dll
+          **/TripPricer/obj/Debug/net7.0/ref/*.dll
+          **/TripPricer/obj/Debug/net7.0/refint/*.dll
           **/TripPricer/bin/Debug/net7.0/*.dll
+          **/GpsUtil/obj/Debug/net7.0/*.dll
+          **/GpsUtil/obj/Debug/net7.0/ref/*.dll
+          **/GpsUtil/obj/Debug/net7.0/refint/*.dll
+          **/GpsUtil/bin/Debug/net7.0/*.dll
 
 
         
