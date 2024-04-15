@@ -3,11 +3,11 @@ name: Pipeline IC P8
 on:
   push:
     branches:
-      - master
+      - 'master'
   pull_request:
     branches:
-      - master
-      - autre_branche
+      - 'master'
+
 
 jobs:
   build:
@@ -37,7 +37,6 @@ jobs:
         name: dll-artifacts
         path: |
           **/TourGuideTest/bin/Debug/net7.0/*.dll #chemin définit dans le CSproj: bin\$(Configuration)\$(TargetFramework)\
-          **/TourGuideTest/bin/Debug/net7.0/*.dll 
           **/GpsUtil/bin/Debug/net7.0/*.dll
           **/RewardCentral/bin/Debug/net7.0/*.dll
           **/TourGuide/bin/Debug/net7.0/*.dll
